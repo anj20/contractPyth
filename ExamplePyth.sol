@@ -1,6 +1,5 @@
 pragma solidity ^0.8.13;
  
-import { console2 } from "forge-std/Test.sol";
 import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
  
 contract ExamplePythContract {
@@ -14,15 +13,10 @@ contract ExamplePythContract {
  
   function mint() public payable {
     PythStructs.Price memory price = pyth.getPrice(ethUsdPriceId);
-    console2.log("price of ETH in USD");
-    console2.log(price.price);
  
     uint ethPrice18Decimals = (uint(uint64(price.price)) * (10 ** 18)) /
       (10 ** uint8(uint32(-1 * price.expo)));
     uint oneDollarInWei = ((10 ** 18) * (10 ** 18)) / ethPrice18Decimals;
- 
-    console2.log("required payment in wei");
-    console2.log(oneDollarInWei);
  
     if (msg.value >= oneDollarInWei) {
       // User paid enough money.
